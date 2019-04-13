@@ -13,6 +13,7 @@ const initialState = {
 const SET_CAMPUSES = 'SET_CAMPUSES';
 const SET_STUDENTS = 'SET_STUDENTS';
 
+
 export const setCampuses = (campuses) => {
     return {
         type: SET_CAMPUSES,
@@ -26,6 +27,7 @@ export const setStudents = (students) => {
         students
     }
 }
+
 
 export const getCampusThunk = () => {
     return dispatch => {
@@ -45,10 +47,12 @@ export const getStudentThunk = () => {
     }
 }
 
+
 export const reducer = (state = {students: []}, action) => {
     switch (action.type) {
         case SET_STUDENTS: return {...state, students: action.students}
         case SET_CAMPUSES: return {...state, campuses: action.campuses}
+       
         default: return state
     }
 }

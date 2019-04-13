@@ -5,9 +5,13 @@ import { getCampusThunk, getStudentThunk } from './store';
 import Home from './Home';
 import StudentForm from './StudentForm';
 import StudentList from './StudentList';
-import CampusList from './CampusList';
-import Nav from './Nav';
+import StudentPage from './StudentPage';
+import CampusPage from './CampusPage';
 
+import CampusList from './CampusList';
+// import CampusPage from './CampusPage';
+
+import Nav from './Nav';
 
  class App extends Component{
   constructor(props){
@@ -26,9 +30,12 @@ import Nav from './Nav';
           <Router>
             <Route render={(({location})=>
                                     Nav({location}))}/>
-            <Route path='/campuses' render={(()=>CampusList({campuses: this.props.campuses}))} />
-            <Route path='/students' render={(()=>StudentList({students: this.props.students}))} />
+            <Route exact path='/campuses' render={(()=>CampusList({campuses: this.props.campuses}))} />
+            <Route exact path='/students' render={(()=>StudentList({students: this.props.students}))} />
+            <Route exact path='/campuses/:id' render={({match})=><CampusPage students={this.props.students} campuses= {this.props.campuses} id= {match.params.id} />}/>
+            {/* <Route exact path='/students/:id' render={(()=>StudentPage({students: this.props.students}))} /> */}
             {/* <Route path='/students/create' component={StudentForm}/> */}
+            <Route exact path='/students/:id' render={({match})=><StudentPage students={this.props.students} campuses= {this.props.campuses} id= {match.params.id} />}/>
             <Route exact path='/' component={Home} />
             </Router>
       </div>

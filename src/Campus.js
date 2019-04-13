@@ -8,9 +8,10 @@ export default function Campus (props) {
   return (
     <div id='campus'>
         <li className="list-group-item">
-            <img src={ campus.imageUrl} />
-            <h4>{ campus.name }</h4>
+            <img src={ campus.imageUrl} /><br/>
+            <Link to={`/campuses/${campus.id}`}>{ campus.name }</Link>
             <h4>{ campus.address }</h4>
+            
             {/* <button onClick={()=>props.editUser(user.id, user)} className="btn btn-primary btn-sm">EDIT</button>  */}
             {/* <Link to='/users/edit/'>Edit</Link> */}
             {/* <UserForm user={user} /> */}

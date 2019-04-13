@@ -11,7 +11,7 @@ const Campus = orm.define('campus', {
     },
     imageUrl: {
         type: Sequelize.TEXT,
-        defaultValue: 'https://images.pottermore.com/bxd3o8b291gf/4j6x7iMI88aicYasciiMsm/c581d5f9a424f664cd6f19dbb4c5dee0/HogwartsCastle_WB_F5_HogwartsCastleIllustration_Illust_080615_Land.jpg?w=1200'
+        defaultValue: 'https://images.pottermore.com/bxd3o8b291gf/4j6x7iMI88aicYasciiMsm/c581d5f9a424f664cd6f19dbb4c5dee0/HogwartsCastle_WB_F5_HogwartsCastleIllustration_Illust_080615_Land.jpg?w=400'
     },
     address: {
         type: Sequelize.STRING,
@@ -61,8 +61,9 @@ Student.belongsTo(Campus);
 const syncAndSeed = ()=>{
     return orm.sync({force: true})
     .then(()=> Promise.all([Campus.create({id: 1, name: 'Hogwarts School of Witchcraft and Wizardry', address: 'Scotland'}),
-    Campus.create({id: 2, name:'Beauxbatons Academy of Magic', address: 'France', imageUrl: 'https://images.pottermore.com/bxd3o8b291gf/3hvlBgnk2QmqU4YaUwG2cu/7d852f3991e6d53407d3c70a12efb314/Wizarding-School-Map-Beauxbatons.jpg?w=1200'}),
-    Campus.create({id: 3, name:'Durmstrang Institute', address: 'Belgium', imageUrl: 'https://images.pottermore.com/bxd3o8b291gf/7m6Tr6KIhOkWGwgim2AyUi/6cdf6741be2ef6d77896c5cac7743555/Wizarding-School-Map-Durmstrang.jpg?w=1200'}),
+    Campus.create({id: 2, name:'Beauxbatons Academy of Magic', address: 'France', imageUrl: 'https://images.pottermore.com/bxd3o8b291gf/3hvlBgnk2QmqU4YaUwG2cu/7d852f3991e6d53407d3c70a12efb314/Wizarding-School-Map-Beauxbatons.jpg?w=400'}),
+    Campus.create({id: 3, name:'Durmstrang Institute', address: 'Belgium', imageUrl: 'https://images.pottermore.com/bxd3o8b291gf/7m6Tr6KIhOkWGwgim2AyUi/6cdf6741be2ef6d77896c5cac7743555/Wizarding-School-Map-Durmstrang.jpg?w=400'}),
+    Campus.create({id: 4, name:'Cal', address: 'USA', imageUrl: 'https://media.ussportscamps.com/media/legacy/UC_Berkeley_Campus.jpg'}),
     Student.create({id: 11, firstName: 'Hermione', lastName: 'Granger', email: 'granger@hogwarts.com', gpa: 4.0}),
     Student.create({id: 12, firstName: 'Harry', lastName: 'Potter', email: 'potter@hogwarts.com', gpa: 3.0, imageUrl: 'https://www.collectgbstamps.co.uk/images/gb/2018/2018_9519.jpg'}),
     Student.create({id: 13, firstName: 'Ron', lastName: 'Weasley', email: 'weasley@hogwarts.com', gpa: 2.9, imageUrl: 'https://www.collectgbstamps.co.uk/images/gb/2018/2018_9521.jpg'}),
@@ -71,7 +72,9 @@ const syncAndSeed = ()=>{
     Student.create({id: 16, firstName: 'Matias', lastName: 'Poliakoff', email: 'poliakoff@durmstrang.com', gpa: 2.0}),
     Student.create({id: 17, firstName: 'Gabrielle', lastName: 'Delacour', email: 'g.delacour@beauxbatons.com', gpa: 4.0}),
     Student.create({id: 18, firstName: 'Ginny', lastName: 'Weasley', email: 'g.weasley@hogwarts.com', gpa: 3.5, imageUrl: 'https://www.collectgbstamps.co.uk/images/gb/2018/2018_9523.jpg'}),
-    Student.create({id: 19, firstName: 'Draco', lastName: 'Malfoy', email: 'malfoy@hogwarts.com', gpa: 4.0})
+    Student.create({id: 19, firstName: 'Draco', lastName: 'Malfoy', email: 'malfoy@hogwarts.com', gpa: 4.0}),
+    Student.create({id: 20, firstName: 'Annie', lastName: 'Liebowitz', email: 'liebowitz@berkeley.edu', gpa: 2.0})
+
         ]))
     .then((array)=>{
         array.filter(item=>item.id>10 && item.email.includes('hogwarts'))
