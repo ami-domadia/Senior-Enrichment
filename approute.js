@@ -25,27 +25,28 @@ approute.get('/api/campuses/', (req, res, next)=>{
     .catch(next);
 })
 
+approute.post('/api/campuses/', (req, res, next)=>{
+    return Campus.create(req.body)
+    .then((campus)=>res.json(campus))
+    .catch(next);
+})
 
+approute.post('/api/students/', (req, res, next)=>{
+    return Student.create(req.body)
+    .then((student)=>res.json(student))
+    .catch(next);
+})
 
-// approute.post('/api/users', (req, res, next)=>{
-//     console.log('req.body in router post', req.body)
-//     return User.create(req.body)
-//     .then(user => res.json(user))
-//     .catch(next)
-// })
+approute.delete('/api/campuses/:id', (req, res, next)=>{
+    return Campus.destroy({where: {id: req.params.id}})
+    .then(()=>res.send(204))
+    .catch(next);
+})
 
-// approute.put('/api/users/:id', (req, res, next)=>{
-//     console.log(req.body)
-//     return User.update(req.body, {where: {id: req.params.id}})
-//     .then(user => res.json(user))
-//     .catch(next)
-// })
-
-// approute.delete('/api/users/:id', (req, res, next)=>{
-//     console.log(req.body)
-//     return User.destroy({where: {id: req.params.id}})
-//     .then(() => res.sendStatus(204).end())
-//     .catch(next)
-// })
+approute.delete('/api/students/:id', (req, res, next)=>{
+    return Student.destroy({where: {id: req.params.id}})
+    .then(()=>res.send(204))
+    .catch(next);
+})
 
 module.exports = approute;

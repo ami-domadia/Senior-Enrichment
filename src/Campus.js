@@ -11,7 +11,7 @@ export default function Campus (props) {
             <img src={ campus.imageUrl} /><br/>
             <Link to={`/campuses/${campus.id}`}>{ campus.name }</Link>
             <h4>{ campus.address }</h4>
-            
+            <button onClick={()=> props.deleteCampus(campus.id)} className="btn btn-danger">SHUTDOWN CAMPUS</button> <br/><br/>
             {/* <button onClick={()=>props.editUser(user.id, user)} className="btn btn-primary btn-sm">EDIT</button>  */}
             {/* <Link to='/users/edit/'>Edit</Link> */}
             {/* <UserForm user={user} /> */}

@@ -7,8 +7,8 @@ const CampusList = (props) => {
         console.log(campuses);
         return (
             <div>
-                <ul className="list-group" >
-                { campuses.map(campus => <Campus campus={campus} key={campus.id} />) }
+                <ul className="list-group">
+                { campuses.map(campus => <Campus campus={campus} key={campus.id} deleteCampus={props.deleteCampus} />) }
                 </ul>
             </div>
         );

@@ -5,7 +5,7 @@ const Nav = ({location}) => {
     const pathname = location.pathname
     return (
         // <ul className='nav nav-tabs'>
-            <ul class="topnav">
+            <ul className="topnav">
 
             <li key='Home' className={`nav-link ${pathname==='/'? 'active':''}`}>
                 <Link to='/'>Home</Link>

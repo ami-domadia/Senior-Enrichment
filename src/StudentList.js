@@ -8,7 +8,7 @@ const StudentList = (props) => {
         return (
             <div>
                 <ul className="list-group" >
-                { students.map(student => <Student student={student} key={student.id} />) }
+                { students.map(student => <Student student={student} key={student.id} deleteStudent={props.deleteStudent} />) }
                 </ul>
             </div>
         );

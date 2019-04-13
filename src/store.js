@@ -38,6 +38,26 @@ export const getCampusThunk = () => {
     }
 }
 
+export const createCampusThunk = (campus) => {
+    return dispatch => {
+        return axios.post('/api/campuses', campus)
+            .then(()=>axios.get('/api/campuses'))
+            .then(({ data }) => {
+                return dispatch(setCampuses(data))
+            })
+    }
+}
+
+export const deleteCampusThunk = (id) => {
+    return dispatch => {
+        return axios.delete(`/api/campuses/${id}`)
+            .then(()=>axios.get('/api/campuses'))
+            .then(({ data }) => {
+                return dispatch(setCampuses(data))
+            })
+    }
+}
+
 export const getStudentThunk = () => {
     return dispatch => {
         return axios.get('/api/students')
@@ -46,6 +66,27 @@ export const getStudentThunk = () => {
             })
     }
 }
+
+export const createStudentThunk = (student) => {
+    return dispatch => {
+        return axios.post('/api/students', student)
+            .then(()=>axios.get('/api/students'))
+            .then(({ data }) => {
+                return dispatch(setStudents(data))
+            })
+    }
+}
+
+export const deleteStudentThunk = (id) => {
+    return dispatch => {
+        return axios.delete(`/api/students/${id}`)
+            .then(()=>axios.get('/api/students'))
+            .then(({ data }) => {
+                return dispatch(setStudents(data))
+            })
+    }
+}
+
 
 
 export const reducer = (state = {students: []}, action) => {
