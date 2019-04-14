@@ -6,15 +6,18 @@ export default function CampusPage (props) {
 
   const students = props.students;
   const campuses = props.campuses;
-  console.log(campuses);
-  const campus = campuses.filter(item=>item.id===Number(props.id))[0];
+  console.log('campuses:', campuses);
+  console.log('students:', students);
+  console.log('props.id:', props.id);
+
+  const campus = campuses && campuses.length>0? campuses.filter(item=>item.id===Number(props.id))[0]: {};
 
   console.log(campus);
-  let studentsOfThisSchool = students.filter(item=>item.campusId===campus.id);
+  let studentsOfThisSchool = students && students.length>0? students.filter(item=>item.campusId===campus.id): {};
   console.log('CampusPage:', campus);
 
-  return (
-    <div id='campusPage'>
+  return ( 
+    <div>
             <h2>{ campus.name}</h2>
             <img src={ campus.imageUrl } />
             <h4>In the Country of {campus.address} </h4>

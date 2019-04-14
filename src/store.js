@@ -67,12 +67,24 @@ export const getStudentThunk = () => {
     }
 }
 
-export const createStudentThunk = (student) => {
+export const saveStudentThunk = (student, history) => {
     return dispatch => {
-        return axios.post('/api/students', student)
+        return axios[student.id? 'put': 'post'](`/api/students/${student.id? student.id:''}`, student)
             .then(()=>axios.get('/api/students'))
             .then(({ data }) => {
                 return dispatch(setStudents(data))
+            .then(()=>history.push('/students'))
+            })
+    }
+}
+
+export const saveCampusThunk = (campus, history) => {
+    return dispatch => {
+        return axios[campus.id? 'put': 'post'](`/api/campuses/${campus.id? campus.id:''}`, campus)
+            .then(()=>axios.get('/api/campuses'))
+            .then(({ data }) => {
+                return dispatch(setCampuses(data))
+            .then(()=>history.push('/campuses'))
             })
     }
 }

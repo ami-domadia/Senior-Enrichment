@@ -1,5 +1,6 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const Nav = ({location}) => {
     const pathname = location.pathname
@@ -17,13 +18,17 @@ const Nav = ({location}) => {
                 <Link to='/campuses' className={`nav-link ${pathname==='/campuses'? 'active':''}`}>Campuses</Link>
             </li>
             {/* <li key='create'> 
-                <Link to='/users/create' className={`nav-link ${pathname==='/users/create'? 'active':''}`}>Create</Link>
-            </li>
-            <li key='topRanked'> 
+                <Link to='/campuses/create' className={`nav-link ${pathname==='/campuses/create'? 'active':''}`}>New Campus</Link>
+            </li> */}
+            {/* <li key='topRanked'> 
                 <Link to='/users/topRanked' className={`nav-link ${pathname==='/users/topRanked'? 'active':''}`}>TopRanked {toplist.map(user=>user.name)}</Link>
             </li> */}
             </ul>
     )
+}
+
+Nav.proptypes = {
+    location: PropTypes.object,
 }
 
 export default Nav

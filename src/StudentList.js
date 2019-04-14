@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Student from './Student';
 
 const StudentList = (props) => {
@@ -8,10 +9,15 @@ const StudentList = (props) => {
         return (
             <div>
                 <ul className="list-group" >
-                { students.map(student => <Student student={student} key={student.id} deleteStudent={props.deleteStudent} />) }
+                { students!=={} && students !==  undefined? students.map(student => <Student student={student} key={student.id} deleteStudent={props.deleteStudent} />): ''}
                 </ul>
             </div>
-        );
+        )
+}
+
+StudentList.proptypes = {
+    students: PropTypes.Array,
+    deleteStudent: PropTypes.function,
 }
 
 export default StudentList;

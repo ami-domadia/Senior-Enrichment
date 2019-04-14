@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+
 import {connect} from 'react-redux';
-import { getCampusThunk, getStudentThunk, deleteCampusThunk, deleteStudentThunk, 
-  createCampusThunk, createStudentThunk } from './store';
+import { getCampusThunk, getStudentThunk, deleteCampusThunk, deleteStudentThunk } from './store';
 import Home from './Home';
 import StudentForm from './StudentForm';
 import StudentList from './StudentList';
 import StudentPage from './StudentPage';
 import CampusPage from './CampusPage';
 import CampusList from './CampusList';
+import CampusForm from './CampusForm';
+
 
 import Nav from './Nav';
 
@@ -29,12 +31,14 @@ import Nav from './Nav';
           <Router>
             <Route render={(({location})=>
                                     Nav({location}))}/>
-            <Route exact path='/campuses' render={(()=>CampusList({campuses: this.props.campuses, deleteCampus: this.props.deleteCampus}))} />
-            <Route exact path='/students' render={(()=>StudentList({students: this.props.students, deleteStudent: this.props.deleteStudent}))} />
-            <Route exact path='/campuses/:id' render={({match})=><CampusPage students={this.props.students} campuses= {this.props.campuses} deleteCampus={this.props.deleteCampus} deleteStudent={this.props.deleteStudent} id= {match.params.id} />}/>
-            {/* <Route path='/students/create' component={StudentForm}/> */}
-            <Route exact path='/students/:id' render={({match})=><StudentPage students={this.props.students} campuses= {this.props.campuses} deleteStudent={this.props.deleteStudent} id= {match.params.id} />}/>
-            <Route exact path='/' component={Home} />
+            <Switch>
+              <Route exact path='/campuses' render={(()=>CampusList({campuses: this.props.campuses, deleteCampus: this.props.deleteCampus}))} />
+              <Route exact path='/students' render={(()=>StudentList({students: this.props.students, deleteStudent: this.props.deleteStudent}))} />
+              <Route exact path='/campuses/save' render={({ history, match }) => <CampusForm match={match} history={history} />}/>
+              <Route exact path='/campuses/:id' render={({match})=><CampusPage students={this.props.students} campuses= {this.props.campuses} deleteCampus={this.props.deleteCampus} deleteStudent={this.props.deleteStudent} id= {match.params.id} />}/>
+              <Route exact path='/students/:id' render={({match})=><StudentPage students={this.props.students} campuses= {this.props.campuses} deleteStudent={this.props.deleteStudent} id= {match.params.id} />}/>
+              <Route exact path='/' component={Home} />
+            </Switch>
             </Router>
       </div>
     );
@@ -42,6 +46,9 @@ import Nav from './Nav';
 }
 
 const mapStateToProps = (state)=>{
+  if(!state.students || !state.campuses){
+    return {}
+  }
   return {students : state.students, campuses: state.campuses};
 }
 
