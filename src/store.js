@@ -3,7 +3,7 @@ import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import axios from 'axios';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { combineReducers } from 'redux';
+// import { combineReducers } from 'redux';
 
 const initialState = {
     students: [],
@@ -12,7 +12,6 @@ const initialState = {
 
 const SET_CAMPUSES = 'SET_CAMPUSES';
 const SET_STUDENTS = 'SET_STUDENTS';
-
 
 export const setCampuses = (campuses) => {
     return {
@@ -28,30 +27,9 @@ export const setStudents = (students) => {
     }
 }
 
-
 export const getCampusThunk = () => {
     return dispatch => {
         return axios.get('/api/campuses')
-            .then(({ data }) => {
-                return dispatch(setCampuses(data))
-            })
-    }
-}
-
-export const createCampusThunk = (campus) => {
-    return dispatch => {
-        return axios.post('/api/campuses', campus)
-            .then(()=>axios.get('/api/campuses'))
-            .then(({ data }) => {
-                return dispatch(setCampuses(data))
-            })
-    }
-}
-
-export const deleteCampusThunk = (id) => {
-    return dispatch => {
-        return axios.delete(`/api/campuses/${id}`)
-            .then(()=>axios.get('/api/campuses'))
             .then(({ data }) => {
                 return dispatch(setCampuses(data))
             })
@@ -69,22 +47,46 @@ export const getStudentThunk = () => {
 
 export const saveStudentThunk = (student, history) => {
     return dispatch => {
-        return axios[student.id? 'put': 'post'](`/api/students/${student.id? student.id:''}`, student)
+        return axios[student.id? 'put': 'post'](`/api/students/`, student)
+            .then(()=>history.push('/students'))
             .then(()=>axios.get('/api/students'))
             .then(({ data }) => {
                 return dispatch(setStudents(data))
-            .then(()=>history.push('/students'))
             })
     }
 }
 
 export const saveCampusThunk = (campus, history) => {
     return dispatch => {
-        return axios[campus.id? 'put': 'post'](`/api/campuses/${campus.id? campus.id:''}`, campus)
+        // return axios[campus.id? 'put': 'post'](`/api/campuses/${campus.id? campus.id:''}`, campus)
+        return axios[campus.id? 'put': 'post'](`/api/campuses/`, campus)
+            .then(()=>history.push('/campuses'))
+            .then(()=>axios.get('/api/campuses'))
+            .then(({ data }) =>  {
+                return dispatch(setCampuses(data));
+            })
+        
+    }
+}
+
+export const editStudentThunk = (student, history) => {
+    return dispatch => {
+        return axios.put(`/api/students/${student.id}`, student)
+            .then(()=>history.push('/students'))
+            .then(()=>axios.get('/api/students'))
+            .then(({ data }) => {
+                return dispatch(setStudents(data))
+            })
+    }
+}
+
+export const editCampusThunk = (campus, history) => {
+    return dispatch => {
+        return axios.put(`/api/campuses/${campus.id}`, campus)
+            .then(()=>history.push('/campuses'))
             .then(()=>axios.get('/api/campuses'))
             .then(({ data }) => {
                 return dispatch(setCampuses(data))
-            .then(()=>history.push('/campuses'))
             })
     }
 }
@@ -99,13 +101,20 @@ export const deleteStudentThunk = (id) => {
     }
 }
 
+export const deleteCampusThunk = (id) => {
+    return dispatch => {
+        return axios.delete(`/api/campuses/${id}`)
+            .then(()=>axios.get('/api/campuses'))
+            .then(({ data }) => {
+                return dispatch(setCampuses(data))
+            })
+    }
+}
 
-
-export const reducer = (state = {students: []}, action) => {
+export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_STUDENTS: return {...state, students: action.students}
         case SET_CAMPUSES: return {...state, campuses: action.campuses}
-       
         default: return state
     }
 }

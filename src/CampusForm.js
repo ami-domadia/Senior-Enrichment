@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { saveCampusThunk } from './store';
+import { saveCampusThunk, editCampusThunk } from './store';
 import PropTypes from 'prop-types';
-
 
 class CampusForm extends Component {
 
@@ -17,41 +16,46 @@ class CampusForm extends Component {
 
   stateIfPassed(campus){
     return {
-      name: campus? campus.name: '',
-      description: campus? campus.description: '',
-      address: campus? campus.address: '',
-      imageUrl: campus? campus.imageUrl: ''
-    }
+      id: campus && campus.id? campus.id: '',
+      name: campus && campus.id? campus.name: '',
+      description: campus && campus.id? campus.description: '',
+      address: campus && campus.id? campus.address: '',
+      imageUrl: campus && campus.id? campus.imageUrl: ''    }
   }
 
   componentDidUpdate(prevProps){
-    if(this.props.campus && !prevProps.campus){
-      this.setState(this.stateFromCampus(this.props.campus));
+    if(this.props.campus && this.props.campus.id && !prevProps.campus.id){
+      this.setState(this.stateIfPassed(this.props.campus));
     }
   }
 
   onHandleSubmit(event){
     event.preventDefault();
-    // if(this.type==='create'){
-      this.props.saveCampus({name: this.state.name, description: this.state.description, 
-        imageUrl: this.state.imageUrl, address: this.state.address}, this.props.history);
-    //}
-    // else{
-    //   this.props.editUser(this.state.id, {name: this.state.name, bio: this.state.bio, 
-    //                         rank: this.state.rank});
-    //}
-   
+    let submitObj = {...this.state};
+    if(submitObj.imageUrl === ''){
+      delete submitObj.imageUrl;
+    }
+    if(submitObj.description === ''){
+      delete submitObj.description;
+    }
+    if(submitObj.id){
+      this.props.editCampus(submitObj)
+        .catch((error)=>console.log(error));
+    }
+    else{
+      this.props.saveCampus(submitObj)
+      .catch((error)=>console.log(error));
+    }
+    
   }
 
   onHandleChange(event){
     this.setState({[event.target.name]: event.target.value});
   }
 
-  render (func) {
+  render () {
     console.log('In CampusForm render')
-    // if(!this.state){
-    //     return '';
-    // }
+    
     return (
       <div>
       <form>
@@ -59,7 +63,7 @@ class CampusForm extends Component {
         <label htmlFor='name'>Name</label>
         <input className="form-control"
           name='name' type='text'
-          value={this.state.name}
+          value={this.state?this.state.name:''}
           onChange={this.onHandleChange}
         />
         </div>
@@ -96,20 +100,34 @@ class CampusForm extends Component {
 }
 
 const mapStateToProps = (state, {match}) => {
-  console.log('in campusform,match.params.id ', match.params.id);
+  let tempcampus = {};
+  if(state.campuses){
+    tempcampus = state.campuses.find(item => item.id===1*match.params.id);
+  }
+  else {
+    tempcampus = {};
+  }
   return {
-    campus: state!=={} && state.campuses !== undefined? state.campuses.find(item => item.id===match.params.id): false
+    campus : tempcampus
   }
 }
+
 const mapDispatchToProps =  (dispatch,  {history}) => {
     return {
-        saveCampus: (campus) => dispatch(saveCampusThunk(campus, history)),
+        saveCampus: (campus) =>{
+          history.push('/campuses');
+          return dispatch(saveCampusThunk(campus, history));
+        },
+        editCampus: (campus) =>{
+          history.push('/campuses');
+          return dispatch(editCampusThunk(campus, history));
+        },
     }
 }
 
 CampusForm.propTypes = {
     history: PropTypes.object,
-
+    campus: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CampusForm);
