@@ -41,17 +41,31 @@ approute.post('/api/students/', (req, res, next)=>{
 })
 
 approute.put('/api/students/:id', (req, res, next)=>{
-    return Promise.all([Student.update(req.body, {returning: true, where: {id: req.params.id}}), Campus.findAll()])
-    .then(([[ rowsUpdate, [updatedStudent] ], campuses])=>{console.log('student in put route after db update',updatedStudent); res.json(updatedStudent); return [updatedStudent, campuses];})
-    .then(([student, campuses])=>{return {student, campus: campuses.filter(item=>item.name.toLowerCase().includes(student.email.split('@')[1].split('.')[0]))[0]}})
-    .then(({student, campus})=>{Student.update({campusId: campus.id}, {returning: true, where: {id: student.id}}).then(([rowsUpdate, [updatedStudent]])=>updatedStudent)})
+    return Promise.all([Student.update(req.body, 
+        {returning: true, where: {id: req.params.id}}), 
+        Campus.findAll()])
+    .then(([[ rowsUpdate, [updatedStudent] ], campuses])=>{
+            res.json(updatedStudent); 
+            return [updatedStudent, campuses];
+    })
+    .then(([student, campuses])=>{
+        return {student, 
+            campus: campuses.filter(item=>item.name.toLowerCase().includes(student.email.split('@')[1].split('.')[0]))[0]}
+    })
+    .then(({student, campus})=>{
+        Student.update({campusId: campus.id}, {returning: true, where: {id: student.id}})
+        .then(([rowsUpdate, [updatedStudent]])=>updatedStudent)})
     .then(updatedStudent=>console.log('after campus update', updatedStudent))
     .catch(next);
 })
 
 approute.put('/api/campuses/:id', (req, res, next)=>{
     return Campus.update(req.body, {returning: true, where: {id: req.params.id}})
-    .then(([ rowsUpdate, [updatedCampus] ])=>{console.log('student in put route after db update',updatedCampus); res.json(updatedCampus); return updatedCampus;})
+    .then(([ rowsUpdate, [updatedCampus] ])=>{
+        console.log('student in put route after db update',updatedCampus); 
+        res.json(updatedCampus); 
+        return updatedCampus;
+    })
     .then(updatedCampus=>console.log('after campus update', updatedCampus))
     .catch(next);
 })

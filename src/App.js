@@ -24,10 +24,13 @@ import Nav from './Nav';
             <Switch>
               <Route exact path='/campuses' component={CampusList}/>
               <Route exact path='/students' component={StudentList}/>
+              {/* FOR CREATE */}
               <Route exact path='/campuses/save/' component={CampusForm}/>
               <Route exact path='/students/save/' component={StudentForm}/>
+              {/* FOR EDIT */}
               <Route exact path='/campuses/save/:id' component={CampusForm}/>
               <Route exact path='/students/save/:id' component={StudentForm}/>
+              
               <Route exact path='/campuses/:id' component={CampusPage}/>
               <Route exact path='/students/:id' component={StudentPage}/>
               <Route exact path='/' component={Home}/>

@@ -14,7 +14,6 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname,'dist')))
 app.use('/', approute)
 
-
 syncAndSeed()
 .then((app.listen(PORT, ()=>{
     console.log('Your server is listening on port', PORT)
